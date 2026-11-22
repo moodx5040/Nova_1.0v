@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10131b">
+  <meta name="description" content="NOVA CHAT ULTIMATE — تواصل فوري وآمن">
+  <title>NOVA CHAT ULTIMATE</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+  <main id="auth-screen" class="auth-screen">
+    <section class="auth-card glass">
+      <div class="brand-mark">N</div>
+      <p class="eyebrow">NOVA COMMUNICATION</p>
+      <h1>NOVA CHAT <span>ULTIMATE</span></h1>
+      <p class="muted auth-intro">مساحة تواصل تجمعك بمن يهمك.</p>
+      <form id="auth-form" class="stack">
+        <label for="auth-email">البريد الإلكتروني</label>
+        <input id="auth-email" type="email" autocomplete="email" placeholder="name@example.com" required>
+        <label for="auth-password">كلمة المرور</label>
+        <input id="auth-password" type="password" autocomplete="current-password" minlength="6" placeholder="••••••••" required>
+        <input id="auth-display-name" type="text" autocomplete="name" placeholder="اسم العرض (للحساب الجديد)" maxlength="40">
+        <div class="auth-actions">
+          <button class="btn primary" type="submit" id="login-btn">تسجيل الدخول</button>
+          <button class="btn secondary" type="button" id="signup-btn">إنشاء حساب</button>
+        </div>
+      </form>
+      <p class="tiny muted">بالتسجيل أنت توافق على الالتزام بإرشادات المجتمع.</p>
+    </section>
+  </main>
+
+  <div id="app-shell" class="app-shell hidden">
+    <aside class="sidebar">
+      <header class="side-header">
+        <div class="brand-inline"><span class="brand-mini">N</span><div><b>NOVA CHAT</b><small>ULTIMATE</small></div></div>
+        <button id="install-btn" class="icon-btn" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">⇩</button>
+      </header>
+      <div class="self-row">
+        <img id="my-avatar" class="avatar" alt="صورتك" src="./icon.svg">
+        <div class="self-meta"><b id="my-name">مستخدم NOVA</b><small id="my-handle">@user</small></div>
+        <span id="role-chip" class="role-chip hidden">FOUNDER</span>
+      </div>
+      <div class="search-wrap"><span>⌕</span><input id="global-search" type="search" placeholder="ابحث في المحادثات والأعضاء"></div>
+      <div class="filter-row" id="chat-filters">
+        <button class="filter active" data-filter="all">الكل</button>
+        <button class="filter" data-filter="direct">الخاص</button>
+        <button class="filter" data-filter="groups">القروبات والعام</button>
+      </div>
+      <div class="section-heading"><span>محادثاتك</span><button id="new-group-btn" class="text-btn">＋ مجموعة</button></div>
+      <div id="chat-list" class="chat-list"></div>
+      <div class="sidebar-foot"><span class="online-dot"></span> متصل الآن <span id="connection-state" class="connection-state">جارٍ الاتصال</span></div>
+    </aside>
+
+    <section class="main-panel">
+      <header class="mobile-header">
+        <div class="brand-inline"><span class="brand-mini">N</span><b>NOVA CHAT</b></div>
+        <button id="mobile-profile-btn" class="icon-btn" aria-label="الملف الشخصي">●</button>
+      </header>
+
+      <section id="chats-view" class="view active-view">
+        <div id="welcome-panel" class="welcome-panel">
+          <div class="welcome-orbit"><span>N</span></div>
+          <p class="eyebrow">YOUR SPACE. YOUR PEOPLE.</p>
+          <h2>كل محادثاتك، <em>في مكان واحد.</em></h2>
+          <p class="muted">اختر محادثة من القائمة أو ابحث عن عضو لبدء حديث جديد.</p>
+          <button id="welcome-search-btn" class="btn primary">اكتشف الأعضاء</button>
+        </div>
+        <section id="conversation-panel" class="conversation-panel hidden">
+          <header class="conversation-header">
+            <button id="back-to-list" class="icon-btn back-btn" aria-label="العودة للمحادثات">→</button>
+            <img id="active-avatar" class="avatar" src="./icon.svg" alt="">
+            <div class="conversation-title"><b id="active-title">المحادثة</b><small id="active-subtitle">متصل</small></div>
+            <button id="report-chat-btn" class="icon-btn" title="الإبلاغ عن المحادثة">⚑</button>
+            <button id="conversation-info-btn" class="icon-btn" title="معلومات المحادثة">ⓘ</button>
+          </header>
+          <div id="message-list" class="message-list" aria-live="polite"></div>
+          <div id="typing-note" class="typing-note hidden">يكتب الآن…</div>
+          <form id="message-form" class="composer">
+            <button type="button" id="attach-image-btn" class="composer-icon" title="إرسال صورة">＋</button>
+            <input id="image-input" type="file" accept="image/*" hidden>
+            <input id="message-input" type="text" maxlength="5000" placeholder="اكتب رسالتك هنا…" autocomplete="off">
+            <button type="button" id="record-btn" class="composer-icon" title="تسجيل رسالة صوتية">🎙</button>
+            <button type="submit" id="send-btn" class="send-btn" aria-label="إرسال">➤</button>
+          </form>
+          <div id="recording-status" class="recording-status hidden">● جارٍ التسجيل… <button id="stop-record-btn" type="button">إيقاف وإرسال</button><button id="cancel-record-btn" type="button">إلغاء</button></div>
+        </section>
+      </section>
+
+      <section id="members-view" class="view">
+        <div class="page-heading"><p class="eyebrow">NOVA COMMUNITY</p><h2>الأعضاء</h2><p class="muted">ابحث عن الأعضاء وابدأ محادثة خاصة مباشرة.</p></div>
+        <div class="member-search"><span>⌕</span><input id="member-search-input" type="search" placeholder="الاسم أو @اسم_المستخدم"></div>
+        <div id="members-list" class="members-grid"></div>
+      </section>
+
+      <section id="settings-view" class="view">
+        <div class="page-heading"><p class="eyebrow">PERSONALIZE</p><h2>الإعدادات</h2><p class="muted">خصص NOVA بالطريقة التي تناسبك.</p></div>
+        <div class="settings-grid">
+          <article class="setting-card">
+            <h3>المظهر</h3>
+            <div class="setting-line"><span>الوضع الليلي</span><button id="theme-toggle" class="toggle-btn" type="button">تبديل الوضع</button></div>
+            <div class="setting-line"><span>لون الواجهة</span><input id="accent-color" type="color" value="#7c5cff" aria-label="اختر لون الواجهة"></div>
+            <button id="reset-color-btn" class="btn secondary full">استعادة اللون الافتراضي</button>
+          </article>
+          <article class="setting-card">
+            <h3>الإشعارات</h3>
+            <p class="muted">فعّل إشعارات المتصفح عند وصول رسائل جديدة.</p>
+            <button id="notifications-btn" class="btn primary full">تفعيل الإشعارات</button>
+            <small id="notification-state" class="muted"></small>
+          </article>
+          <article class="setting-card">
+            <h3>الملف الشخصي</h3>
+            <img id="settings-avatar" class="avatar large" src="./icon.svg" alt="الصورة الشخصية">
+            <input id="profile-image-input" type="file" accept="image/*" hidden>
+            <button id="profile-image-btn" class="btn secondary full">تغيير الصورة</button>
+            <label for="profile-name-input">اسم العرض</label>
+            <input id="profile-name-input" type="text" maxlength="40">
+            <button id="save-profile-btn" class="btn primary full">حفظ الملف الشخصي</button>
+          </article>
+          <article id="founder-tools" class="setting-card founder-card hidden">
+            <h3>مركز المؤسس</h3>
+            <p class="muted">مراجعة البلاغات وإدارة الحالات وفق صلاحيات قاعدة البيانات.</p>
+            <button id="open-reports-btn" class="btn primary full">فتح مركز البلاغات</button>
+            <div id="reports-list" class="reports-list"></div>
+          </article>
+          <article class="setting-card">
+            <h3>الحساب</h3>
+            <p id="account-email" class="muted"></p>
+            <button id="logout-btn" class="btn danger full">تسجيل الخروج</button>
+          </article>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <nav id="bottom-nav" class="bottom-nav hidden" aria-label="التنقل الرئيسي">
+    <button class="nav-item active" data-view="chats-view"><span>▤</span><small>الشاتات</small></button>
+    <button class="nav-item" data-view="members-view"><span>♙</span><small>الأعضاء</small></button>
+    <button class="nav-item" data-view="settings-view"><span>⚙</span><small>الإعدادات</small></button>
+  </nav>
+
+  <dialog id="report-dialog" class="modal">
+    <form method="dialog" id="report-form" class="modal-card">
+      <button class="modal-close" value="cancel" aria-label="إغلاق">×</button>
+      <p class="eyebrow">SAFETY CENTER</p><h3>الإبلاغ عن محتوى</h3>
+      <p class="muted">سيصل البلاغ إلى مركز المراجعة.</p>
+      <label for="report-reason">سبب البلاغ</label>
+      <textarea id="report-reason" rows="4" maxlength="1000" required placeholder="اشرح سبب البلاغ…"></textarea>
+      <button id="submit-report-btn" class="btn primary full" value="default">إرسال البلاغ</button>
+    </form>
+  </dialog>
+
+  <dialog id="group-dialog" class="modal">
+    <form method="dialog" id="group-form" class="modal-card">
+      <button class="modal-close" value="cancel" aria-label="إغلاق">×</button>
+      <p class="eyebrow">CREATE SPACE</p><h3>إنشاء مجموعة خاصة</h3>
+      <label for="group-name">اسم المجموعة</label><input id="group-name" maxlength="60" required placeholder="اسم المجموعة">
+      <p class="muted tiny">تُنشأ المجموعة خاصة، ولا يدخلها إلا الأعضاء الذين تتم إضافتهم.</p>
+      <button class="btn primary full" value="default">إنشاء المجموعة</button>
+    </form>
+  </dialog>
+
+  <dialog id="info-dialog" class="modal"><div class="modal-card"><button id="close-info" class="modal-close">×</button><h3 id="info-title">معلومات المحادثة</h3><p id="info-body" class="muted"></p></div></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
