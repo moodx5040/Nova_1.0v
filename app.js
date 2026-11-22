@@ -1,7 +1,7 @@
 (() => {
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
-const CONFIG = { url: "https://ushkxkocqgofhozkpctq.supabase.co", anonKey: "Sb_publishable_TWdxStrX_8DsS7KsUm_41g_MVp0dhq3" };
+const CONFIG = { url: "https://ushkxkocqgofhozkpctq.supabase.co", anonKey: "sb_publishable_TWdxStrX_8DsS7KsUm_41g_MVp0dhq3" };
 let db, session, me, active = null, activeKind = null, activeRoom = null, activeConversation = null;
 let authMode = "login", replyTo = null, uploadFile = null, realtime = [], presenceChannel = null, onlineUsers = new Set(), typingTimer = null;
 const state = { rooms: [], dms: [], profiles: new Map(), messages: [], settings: {}, announcements: [], theme: localStorage.getItem("nova-theme") || "dark" };
